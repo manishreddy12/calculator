@@ -4,7 +4,7 @@ pipeline {
     environment {
         GITHUB_USER = 'manishreddy12'
         DOCKERHUB_USER = 'manishr09'
-        DOCKER_IMAGE = "${DOCKERHUB_USER}/scientific-calculator:${env.BUILD_NUMBER}"
+        DOCKER_IMAGE = "${DOCKERHUB_USER}/calculator:${env.BUILD_NUMBER}"
         
         // Define the name of the test executable
         TEST_EXEC = 'calculator_tests'
@@ -17,7 +17,7 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-                git branch: 'main', url: "https://github.com/${GITHUB_USER}/scientific-calculator-devops.git" 
+                git branch: 'main', url: "https://github.com/${GITHUB_USER}/calculator.git" 
             }
         }
         
