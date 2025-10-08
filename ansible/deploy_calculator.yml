@@ -1,0 +1,30 @@
+---
+- name: Deploy Scientific Calculator Docker Container
+  hosts: docker_hosts
+  become: yes  # Needed for Docker commands
+
+  tasks:
+    # Task 1: Ensure Docker is installed (best practice)
+    - name: Ensure docker.io is installed
+      ansible.builtin.package:
+        name: docker.io
+        state: present
+    
+    # Task 2: Pull the latest Docker image from Docker Hub
+    - name: Pull the latest calculator image
+      community.docker.docker_image:
+        name: "{{ DOCKER_IMAGE }}"
+        source: pull
+        state: present
+
+    # Task 3: Stop and remove the old container, then run the new one
+    - name: Run the new calculator container
+      community.docker.docker_container:
+        name: scientific_calculator_container
+        image: "{{ DOCKER_IMAGE }}"
+        # A CLI app doesn't need ports, but this is how you'd define them for a web app:
+        # ports:
+        #   - "8080:8080"
+        state: started
+        restart_policy: always
+        recreate: yes # Always deploy the new version
