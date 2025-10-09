@@ -65,14 +65,15 @@ pipeline {
     post {
         always {
             emailext(
+                subject: "Build ${currentBuild.fullDisplayName} - ${currentBuild.currentResult}",
+                body: """Build result: ${currentBuild.currentResult}
+                        Build URL: ${env.BUILD_URL}""",
                 to: 'ambatireddy13@gmail.com',
-                subject: "Build ${env.JOB_NAME} #${env.BUILD_NUMBER} - ${currentBuild.currentResult}",
-                body: """<p>Build URL: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
-                        <p>Build result: ${currentBuild.currentResult}</p>""",
-                recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+                recipientProviders: []  // Important: disables SCM recipient lookup
             )
         }
     }
+
 
 
 }
