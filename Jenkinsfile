@@ -65,7 +65,7 @@ pipeline {
     post {
         always {
             emailext(
-                to: 'your_email@gmail.com',
+                to: 'ambatireddy13@gmail.com',
                 subject: "Build ${currentBuild.fullDisplayName} - ${currentBuild.currentResult}",
                 body: "Build URL: ${env.BUILD_URL}"
             )
