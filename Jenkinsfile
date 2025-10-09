@@ -60,8 +60,11 @@ pipeline {
                 sh "ansible-playbook -i ansible/hosts.ini ansible/deploy_calculator.yml -e DOCKER_IMAGE=${DOCKER_IMAGE}"
             }
         }
-        stage{
-            emailext body: 'testing', subject: 'test', to: 'ambatireddy13@gmail.com'
+
+        stage('send email'){
+            steps{
+                emailext body: 'testing', subject: 'test', to: 'ambatireddy13@gmail.com'
+            }
         }
     }
 
