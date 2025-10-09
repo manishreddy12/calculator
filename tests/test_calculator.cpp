@@ -11,6 +11,7 @@ double power(double base, double exponent);
 TEST(ScientificCalculatorTest, SquareRootValid) {
     ASSERT_NEAR(squareRoot(4.0), 2.0, 1e-9);
     ASSERT_NEAR(squareRoot(16.0), 4.0, 1e-9);
+    ASSERT_NEAR(squareRoot(25.0), 5.0, 1e-9);
     ASSERT_NEAR(squareRoot(9.0), 3.0, 1e-9);
     ASSERT_NEAR(squareRoot(0.0), 0.0, 1e-9);
     ASSERT_NEAR(squareRoot(2.0), 1.414213562, 1e-9);
