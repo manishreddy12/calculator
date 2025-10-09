@@ -1,0 +1,17 @@
+scientific-calculator-devops/
+├── src/
+│   └── calculator.cpp             <-- The main C++ source code with all functions and main()
+├── tests/
+│   └── test_calculator.cpp        <-- C++ unit tests (if using a testing framework like Google Test)
+├── Dockerfile                     <-- Instructions for building the Docker image
+├── Jenkinsfile                    <-- Declarative pipeline script for Jenkins
+├── ansible/
+│   ├── hosts.ini                  <-- Inventory file (defines 'localhost' or remote server)
+│   └── deploy_calculator.yml      <-- Ansible Playbook for pulling and running the container
+├── .gitignore                     <-- Specifies files/folders Git should ignore (e.g., compiled binaries)
+└── README.md                      <-- Project description and build/run instructions
+
+
+to run tests: g++ src/calculator.cpp tests/test_calculator.cpp -o calculator_tests -lgtest -lgtest_main -lpthread -lm
+
+
