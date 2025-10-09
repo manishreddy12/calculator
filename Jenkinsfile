@@ -60,20 +60,22 @@ pipeline {
                 sh "ansible-playbook -i ansible/hosts.ini ansible/deploy_calculator.yml -e DOCKER_IMAGE=${DOCKER_IMAGE}"
             }
         }
+        stage{
+            emailext body: 'testing', subject: 'test', to: 'ambatireddy13@gmail.com'
+        }
     }
 
     post {
         always {
             emailext(
-                subject: "Build ${currentBuild.fullDisplayName} - ${currentBuild.currentResult}",
-                body: """Build result: ${currentBuild.currentResult}
-                        Build URL: ${env.BUILD_URL}""",
                 to: 'ambatireddy13@gmail.com',
-                recipientProviders: []  // Important: disables SCM recipient lookup
+                recipientProviders: [],  // Important: disables SCM user detection
+                subject: "Build ${currentBuild.fullDisplayName} - ${currentBuild.currentResult}",
+                body: """<p>Build result: ${currentBuild.currentResult}</p>
+                        <p>Build URL: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>""",
+                mimeType: 'text/html'
             )
         }
     }
-
-
 
 }
