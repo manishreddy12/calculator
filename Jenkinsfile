@@ -64,7 +64,12 @@ pipeline {
 
     post {
         always {
-            echo "✅ Pipeline finished (status: ${currentBuild.currentResult})"
+            emailext(
+                to: 'your_email@gmail.com',
+                subject: "Build ${currentBuild.fullDisplayName} - ${currentBuild.currentResult}",
+                body: "Build URL: ${env.BUILD_URL}"
+            )
         }
     }
+
 }
