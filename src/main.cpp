@@ -1,14 +1,15 @@
 #include "calculator.h"
 
-int main() {
-    return app_main();
+// The main entry point for the executable
+int main(int argc, char *argv[]) {
+    // If a command-line argument is provided, process it.
+    // This is how the Python web server will use the program.
+    if (argc > 1) {
+        processExpression(argv[1]);
+    } else {
+        // If no arguments are given, run the interactive menu
+        // for local testing.
+        app_main();
+    }
+    return 0;
 }
-
-
-/*
-    to run only calc.cpp: g++ src/main.cpp src/calculator.cpp -o calculator -lm
-./calculator
-    to run tests: ./test_calculatorg++ tests/test_calculator.cpp src/calculator.cpp -lgtest -lgtest_main -lpthread -o test_calculator
-./test_calculator
-
-*/

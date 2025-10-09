@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>C++ Scientific Calculator</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 500px; margin: 2em auto; background-color: #f4f4f9; }
+        .card { background-color: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        h2 { text-align: center; color: #333; }
+        label, select, input { display: block; width: 100%; box-sizing: border-box; padding: 8px; margin-top: 5px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px; }
+        button { width: 100%; padding: 10px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
+        button:hover { background-color: #0056b3; }
+        .result { margin-top: 1rem; padding: 10px; background-color: #e9ecef; border-radius: 5px; font-weight: bold; min-height: 20px; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>Scientific Calculator</h2>
+        <label for="op">Operation:</label>
+        <select id="op" onchange="togglePowerInput()">
+            <option value="sqrt">Square Root (sqrt)</option>
+            <option value="fact">Factorial (!)</option>
+            <option value="ln">Natural Log (ln)</option>
+            <option value="pow">Power (^)</option>
+        </select>
+
+        <label for="x">Value x:</label>
+        <input id="x" type="number" step="any" placeholder="Enter value for x">
+
+        <div id="power-input" style="display:none;">
+            <label for="b">Value b (exponent):</label>
+            <input id="b" type="number" step="any" placeholder="Enter exponent">
+        </div>
+
+        <button onclick="calculate()">Calculate</button>
+        <div id="output" class="result">...</div>
+    </div>
+
+    <script>
+        function togglePowerInput() {
+            const operation = document.getElementById('op').value;
+            const powerInputDiv = document.getElementById('power-input');
+            powerInputDiv.style.display = (operation === 'pow') ? 'block' : 'none';
+        }
+
+        async function calculate() {
+            const op = document.getElementById('op').value;
+            const x = document.getElementById('x').value;
+            const b = document.getElementById('b').value;
+            const outputDiv = document.getElementById('output');
+
+            if (x === '') {
+                outputDiv.textContent = 'Error: Please enter a value for x.';
+                return;
+            }
+
+            let expressionString = '';
+            switch (op) {
+                case 'sqrt':
+                    expressionString = `sqrt(${x})`;
+                    break;
+                case 'fact':
+                    expressionString = `${x}!`;
+                    break;
+                case 'ln':
+                    expressionString = `ln(${x})`;
+                    break;
+                case 'pow':
+                    if (b === '') {
+                        outputDiv.textContent = 'Error: Please enter a value for the exponent b.';
+                        return;
+                    }
+                    expressionString = `pow(${x},${b})`;
+                    break;
+            }
+            
+            outputDiv.textContent = 'Calculating...';
+
+            const response = await fetch('/calculate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ expression: expressionString })
+            });
+            
+            const resultText = await response.text();
+            outputDiv.textContent = resultText;
+        }
+    </script>
+</body>
+</html>

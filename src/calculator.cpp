@@ -1,47 +1,77 @@
+#include "calculator.h"
 #include <iostream>
 #include <cmath>
 #include <limits>
+#include <string>
 #include <cstdlib>
 
-// Function to calculate the factorial of a number
+// Modified to print to std::cout
 long long factorial(int n) {
     if (n < 0) {
-        std::cerr << "Error: Factorial is not defined for negative numbers." << std::endl;
+        std::cout << "Error: Factorial is not defined for negative numbers." << std::endl;
         return 0; 
     }
-    if (n == 0 || n == 1) {
-        return 1;
+    if (n > 20) { // Prevent overflow for long long
+        std::cout << "Error: Input too large for factorial." << std::endl;
+        return 0;
     }
+    if (n == 0 || n == 1) return 1;
     long long result = 1;
-    for (int i = 2; i <= n; ++i) {
-        result *= i;
-    }
+    for (int i = 2; i <= n; ++i) result *= i;
     return result;
 }
 
-// Function to calculate the square root (√x)
+// Modified to print to std::cout
 double squareRoot(double x) {
     if (x < 0) {
-        std::cerr << "Error: Cannot calculate the square root of a negative number." << std::endl;
+        std::cout << "Error: Cannot calculate the square root of a negative number." << std::endl;
         return 0; 
     }
     return std::sqrt(x);
 }
 
-// Function to calculate the natural logarithm (ln(x))
+// Modified to print to std::cout
 double naturalLog(double x) {
     if (x <= 0) {
-        std::cerr << "Error: Natural logarithm is undefined for x <= 0." << std::endl;
+        std::cout << "Error: Natural logarithm is undefined for x <= 0." << std::endl;
         return 0; 
     }
     return std::log(x);
 }
 
-// Function to calculate the power function (x^b)
 double power(double base, double exponent) {
     return std::pow(base, exponent);
 }
 
+// NEW function to parse and handle expressions from the web server
+void processExpression(const std::string& expr) {
+    try {
+        if (expr.find("sqrt(") == 0) {
+            double num = std::stod(expr.substr(5, expr.length() - 6));
+            std::cout << "sqrt(" << num << ") = " << squareRoot(num) << std::endl;
+        } else if (expr.find("ln(") == 0) {
+            double num = std::stod(expr.substr(3, expr.length() - 4));
+            std::cout << "ln(" << num << ") = " << naturalLog(num) << std::endl;
+        } else if (expr.find("pow(") == 0) {
+            size_t comma_pos = expr.find(',');
+            double base = std::stod(expr.substr(4, comma_pos - 4));
+            double exp = std::stod(expr.substr(comma_pos + 1, expr.length() - comma_pos - 2));
+            std::cout << base << "^" << exp << " = " << power(base, exp) << std::endl;
+        } else if (expr.find('!') != std::string::npos) {
+            int num = std::stoi(expr.substr(0, expr.find('!')));
+            long long result = factorial(num);
+            if (result != 0 || num == 0) {
+                 std::cout << num << "! = " << result << std::endl;
+            }
+        } else {
+            std::cout << "Error: Invalid or unsupported expression format." << std::endl;
+        }
+    } catch (const std::exception& e) {
+        std::cout << "Error: Invalid number format in expression." << std::endl;
+    }
+}
+
+// The original interactive menu logic (no changes needed)
 void displayMenu() {
     std::cout << "\nScientific Calculator Menu:\n";
     std::cout << "1. Square Root (sqrt(x))\n";
@@ -55,7 +85,6 @@ void displayMenu() {
 int app_main() {
     int choice;
     double x, y;
-
     while (true) {
         displayMenu();
         if (!(std::cin >> choice)) {
@@ -64,44 +93,26 @@ int app_main() {
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             continue;
         }
-
+        // This logic remains the same for interactive mode
         switch (choice) {
             case 1:
                 std::cout << "Enter number (x) for square root: ";
-                if (std::cin >> x) {
-                    double result = squareRoot(x);
-                    if (result != 0 || x == 0) {
-                        std::cout << "Result: sqrt(" << x << ") = " << result << std::endl;
-                    }
-                }
+                if (std::cin >> x) std::cout << "Result: " << squareRoot(x) << std::endl;
                 break;
             case 2:
                 int n;
                 std::cout << "Enter non-negative integer (x) for factorial: ";
-                if (std::cin >> n) {
-                    long long result = factorial(n);
-                    if (result != 0 || n == 0) {
-                        std::cout << "Result: " << n << "! = " << result << std::endl;
-                    }
-                }
+                if (std::cin >> n) std::cout << "Result: " << factorial(n) << std::endl;
                 break;
             case 3:
                 std::cout << "Enter number (x > 0) for natural log: ";
-                if (std::cin >> x) {
-                    double result = naturalLog(x);
-                    if (result != 0 || x == 1) {
-                        std::cout << "Result: ln(" << x << ") = " << result << std::endl;
-                    }
-                }
+                if (std::cin >> x) std::cout << "Result: " << naturalLog(x) << std::endl;
                 break;
             case 4:
                 std::cout << "Enter base (x): ";
                 if (!(std::cin >> x)) break;
                 std::cout << "Enter exponent (b): ";
-                if (std::cin >> y) {
-                    double result = power(x, y);
-                    std::cout << "Result: " << x << "^" << y << " = " << result << std::endl;
-                }
+                if (std::cin >> y) std::cout << "Result: " << power(x, y) << std::endl;
                 break;
             case 5:
                 std::cout << "Exiting calculator.\n";

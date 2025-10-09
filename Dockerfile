@@ -1,27 +1,25 @@
-# =========================
-# Stage 1: Build the C++ application
-# =========================
-FROM gcc:latest AS builder
-
-# Set working directory
+# Stage 1: Build the C++ executable
+FROM gcc:latest as builder
 WORKDIR /app
-
-# Copy all source files (header + cpp files)
 COPY src/ ./src/
-
-# Compile the application (main + calculator)
 RUN g++ -std=c++17 src/main.cpp src/calculator.cpp -o calculator -lm
 
-# =========================
-# Stage 2: Runtime image
-# =========================
-FROM debian:stable-slim
+# Stage 2: Create the final Python runtime image
+FROM python:3.9-slim
+WORKDIR /app
 
-# Install required shared libraries for C++ apps
-RUN apt-get update && apt-get install -y libstdc++6 && rm -rf /var/lib/apt/lists/*
+# Install Flask
+RUN pip install Flask
 
-# Copy only the built executable
-COPY --from=builder /app/calculator /usr/local/bin/calculator
+# Copy the compiled C++ program from the 'builder' stage
+COPY --from=builder /app/calculator .
 
-# Default command
-CMD ["calculator"]
+# Copy the web server and HTML file
+COPY server.py .
+COPY index.html .
+
+# Expose the port the server will run on
+EXPOSE 5000
+
+# Command to run the Python web server
+CMD ["python", "server.py"]
