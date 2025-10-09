@@ -1,22 +1,27 @@
+# =========================
 # Stage 1: Build the C++ application
+# =========================
 FROM gcc:latest AS builder
 
-# Set the working directory inside the container
+# Set working directory
 WORKDIR /app
 
-# Copy the source code
-COPY src/calculator.cpp .
+# Copy all source files (header + cpp files)
+COPY src/ ./src/
 
-# Compile the application. -o calculator names the executable file.
-# The 'build' step in the pipeline is effectively handled here.
-RUN g++ calculator.cpp -o calculator -lm
+# Compile the application (main + calculator)
+RUN g++ -std=c++17 src/main.cpp src/calculator.cpp -o calculator -lm
 
-# Stage 2: Create a minimal runtime image
-# We use a base image with the necessary C++ libraries
+# =========================
+# Stage 2: Runtime image
+# =========================
 FROM debian:stable-slim
 
-# Copy only the compiled executable from the builder stage
+# Install required shared libraries for C++ apps
+RUN apt-get update && apt-get install -y libstdc++6 && rm -rf /var/lib/apt/lists/*
+
+# Copy only the built executable
 COPY --from=builder /app/calculator /usr/local/bin/calculator
 
-# Command to run the application when the container starts
+# Default command
 CMD ["calculator"]
