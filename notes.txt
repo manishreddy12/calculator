@@ -12,6 +12,10 @@ scientific-calculator-devops/
 └── README.md                      <-- Project description and build/run instructions
 
 
+<<<<<<< HEAD
 to run tests: g++ src/calculator.cpp tests/test_calculator.cpp -o calculator_tests -lgtest -lgtest_main -lpthread -lm
 
 
+=======
+to run tests: g++ src/calculator.cpp tests/test_calculator.cpp -o calculator_tests -lgtest -lgtest_main -lpthread -lm
+>>>>>>> 3da86c79714c6001cb2ca79fd7024e1c4949edf8

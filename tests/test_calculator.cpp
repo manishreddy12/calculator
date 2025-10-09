@@ -10,7 +10,10 @@ double power(double base, double exponent);
 // Test Suite for Square Root
 TEST(ScientificCalculatorTest, SquareRootValid) {
     ASSERT_NEAR(squareRoot(4.0), 2.0, 1e-9);
+<<<<<<< HEAD
     ASSERT_NEAR(squareRoot(16.0), 4.0, 1e-9);
+=======
+>>>>>>> 3da86c79714c6001cb2ca79fd7024e1c4949edf8
     ASSERT_NEAR(squareRoot(9.0), 3.0, 1e-9);
     ASSERT_NEAR(squareRoot(0.0), 0.0, 1e-9);
     ASSERT_NEAR(squareRoot(2.0), 1.414213562, 1e-9);
