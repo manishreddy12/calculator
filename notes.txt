@@ -5,6 +5,8 @@ scientific-calculator-devops/
 │   └── test_calculator.cpp        <-- C++ unit tests (if using a testing framework like Google Test)
 ├── Dockerfile                     <-- Instructions for building the Docker image
 ├── Jenkinsfile                    <-- Declarative pipeline script for Jenkins
+|__ server.py
+|__ index.html
 ├── ansible/
 │   ├── hosts.ini                  <-- Inventory file (defines 'localhost' or remote server)
 │   └── deploy_calculator.yml      <-- Ansible Playbook for pulling and running the container
@@ -13,5 +15,9 @@ scientific-calculator-devops/
 
 
 to run tests: g++ src/calculator.cpp tests/test_calculator.cpp -o calculator_tests -lgtest -lgtest_main -lpthread -lm
+g++ -std=c++17 src/main.cpp src/calculator.cpp -o calculator -lm
 
-
+docker ps
+docker run -d -p 5000:5000 --name scientific_calculator_container manishr09/calculator:20
+docker stop scientific_calculator_container
+docker rm scientific_calculator_container

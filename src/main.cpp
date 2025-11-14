@@ -1,6 +1,5 @@
 #include "calculator.h"
 
-// The main entry point for the executable
 int main(int argc, char *argv[]) {
     // If a command-line argument is provided, process it.
     // This is how the Python web server will use the program.
