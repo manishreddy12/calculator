@@ -1,13 +1,11 @@
 #include <gtest/gtest.h>
 #include <cmath>
 
-// Forward declarations of the functions from src/calculator.cpp
 long long factorial(int n);
 double squareRoot(double x);
 double naturalLog(double x);
 double power(double base, double exponent);
 
-// Test Suite for Square Root
 TEST(ScientificCalculatorTest, SquareRootValid) {
     ASSERT_NEAR(squareRoot(4.0), 2.0, 1e-9);
     ASSERT_NEAR(squareRoot(16.0), 4.0, 1e-9);
@@ -22,7 +20,6 @@ TEST(ScientificCalculatorTest, SquareRootInvalid) {
     ASSERT_EQ(squareRoot(-4.0), 0.0);
 }
 
-// Test Suite for Factorial
 TEST(ScientificCalculatorTest, FactorialValid) {
     ASSERT_EQ(factorial(0), 1);
     ASSERT_EQ(factorial(1), 1);
@@ -31,7 +28,6 @@ TEST(ScientificCalculatorTest, FactorialValid) {
 }
 
 TEST(ScientificCalculatorTest, FactorialInvalid) {
-    // Should handle negative input (returns 0 and prints error to cerr)
     ASSERT_EQ(factorial(-1), 0);
 }
 

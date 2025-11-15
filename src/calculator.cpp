@@ -5,7 +5,6 @@
 #include <string>
 #include <cstdlib>
 
-// Modified to print to std::cout
 long long factorial(int n) {
     if (n < 0) {
         std::cout << "Error: Factorial is not defined for negative numbers." << std::endl;
@@ -21,7 +20,6 @@ long long factorial(int n) {
     return result;
 }
 
-// Modified to print to std::cout
 double squareRoot(double x) {
     if (x < 0) {
         std::cout << "Error: Cannot calculate the square root of a negative number." << std::endl;
@@ -30,7 +28,6 @@ double squareRoot(double x) {
     return std::sqrt(x);
 }
 
-// Modified to print to std::cout
 double naturalLog(double x) {
     if (x <= 0) {
         std::cout << "Error: Natural logarithm is undefined for x <= 0." << std::endl;
@@ -43,7 +40,6 @@ double power(double base, double exponent) {
     return std::pow(base, exponent);
 }
 
-// NEW function to parse and handle expressions from the web server
 void processExpression(const std::string& expr) {
     try {
         if (expr.find("sqrt(") == 0) {
@@ -71,7 +67,6 @@ void processExpression(const std::string& expr) {
     }
 }
 
-// The original interactive menu logic (no changes needed)
 void displayMenu() {
     std::cout << "\nScientific Calculator Menu:\n";
     std::cout << "1. Square Root (sqrt(x))\n";
@@ -93,7 +88,7 @@ int app_main() {
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             continue;
         }
-        // This logic remains the same for interactive mode
+        
         switch (choice) {
             case 1:
                 std::cout << "Enter number (x) for square root: ";
